@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+  <head>
+    <title>The Best Fruit...</title>
+    <style>
+      body {
+        background-color: PeachPuff;
+        color: Peru
+      }
+    </style>
+  </head>
+  <body>
+    <h1>White Nectarines!</h1>
+    <p>
+      Smooth shell with soft flesh
+    </p>
+    <p>
+      Sweet juice of rose and honey
+    </p>
+    <p>
+      Drips down til the pit
+    </p>
+    <p>
+      *i want to insert my animation here*
+    </p>
+  </body>
+</html>
