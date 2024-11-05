@@ -2,6 +2,7 @@
   <head>
       <link href='https://fonts.googleapis.com/css?family=Josefin Slab' rel='stylesheet'>
     <style>
+      
       body {
     font-family: 'Josefin Slab';
     font-size: 22px;
@@ -32,14 +33,27 @@
             hr.new1 {
   border-top: 1px solid seagreen;
 }
+      .flex-container {
+  display: flex;
+  flex-wrap: nowrap; }
+      .flex-container > div {
+  width: 100px;
+  margin: 10px;
+  text-align: center;
+  line-height: 75px;
+  font-size: 30px;
+}
        </style>
     </head>
     <body>
-      <figure>
+      <div class="flex-container">
+  <div>
+    <figure>
         <img src="images/moveyourbody.png" alt="Move Your Body Graphic" width="732.5" height="482"
           </figure>
-      <hr class="hr.new1">
-       <h1 style="color:seagreen;">Exercise increases the production of endorphins, dopamine, and serotonin!</h1>
+  </div>
+  <div>
+    <h1 style="color:seagreen;">Exercise increases the production of endorphins, dopamine, and serotonin!</h1>
         <h2 style="color:seagreen;">Go on a walk, take a workout class, run around the neighborhood, or do a yoga routine! </h2>
         <h2 style="color:seagreen;">Here are some at home things you can do... even though leaving the house could help!</h2>
         <p style="color:seagreen;">
@@ -50,6 +64,8 @@
             <li><a href="https://www.youtube.com/watch?v=sTANio_2E0Q">yoga!</a></li>
         </ul>
     </p>
+  </div>
+</div>
           <hr class="hr.new1">
     <button class="button button1"><a href="https://bet-am.github.io/c1i/">Annnnnd back home!</a></button>
     </body>
