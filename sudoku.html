@@ -21,6 +21,9 @@
             grid-template-rows: repeat(9, 60px);
             gap: 5px;
             border: 2px solid #000;
+            /* Outline each 3x3 subgrid */
+            border-left: 3px solid seagreen;
+            border-top: 3px solid seagreen;
         }
         .sudoku-cell {
             width: 60px;
@@ -71,6 +74,26 @@
             outline: none;
             background-color: transparent;
             box-sizing: border-box;
+        }
+
+        /* Style for 3x3 subgrids */
+        .sudoku-container .sudoku-cell:nth-child(3n + 1) {
+            border-left: 3px solid seagreen;
+        }
+        .sudoku-container .sudoku-cell:nth-child(9n + 1) {
+            border-top: 3px solid seagreen;
+        }
+        .sudoku-container .sudoku-cell:nth-child(27n + 1) {
+            border-left: 3px solid seagreen;
+        }
+        .sudoku-container .sudoku-cell:nth-child(9n + 3) {
+            border-right: 3px solid seagreen;
+        }
+        .sudoku-container .sudoku-cell:nth-child(9n + 7) {
+            border-left: 3px solid seagreen;
+        }
+        .sudoku-container .sudoku-cell:nth-child(63) {
+            border-bottom: 3px solid seagreen;
         }
     </style>
 </head>
