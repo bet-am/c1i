@@ -21,6 +21,7 @@
             grid-template-rows: repeat(9, 60px);
             gap: 0;
             border: 2px solid #000;
+            position: relative;
         }
         .sudoku-cell {
             width: 60px;
@@ -59,6 +60,12 @@
         }
         .sudoku-container div:nth-child(3n + 1) {
             border-left: 3px solid seagreen;
+        }
+        .sudoku-container div:nth-child(-n+9) {
+            border-top: 3px solid seagreen;
+        }
+        .sudoku-container div:nth-child(n+73) {
+            border-bottom: 3px solid seagreen;
         }
         .sudoku-container div:nth-child(27n + 1),
         .sudoku-container div:nth-child(27n + 2),
