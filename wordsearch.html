@@ -1,34 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-   <link href='https://fonts.googleapis.com/css?family=Josefin Slab' rel='stylesheet'>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title style="color:seagreen;">Word Search</title>
+    <title>Word Search</title>
     <style>
         body {
-            font-family: 'Josefin Slab';
+            font-family: Arial, sans-serif;
             text-align: center;
             margin: 20px;
-            background-color: lemonchiffon;
         }
-       .button {
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  font-family: 'Josephine Slab';
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer }
-      .button1 {background-color: yellowgreen }
-    a:link {
-  color: seagreen; }
-    a:visited {
-  color: seagreen; }
-    a:hover {
-  text-decoration: seagreen wavy underline; }
         table {
             margin: 0 auto;
             border-collapse: collapse;
@@ -43,8 +24,9 @@
             font-weight: bold;
             cursor: pointer;
         }
-        td.found {
+        td.highlight {
             background-color: seagreen;
+            color: white;
         }
         .word-list {
             margin-top: 20px;
@@ -57,7 +39,7 @@
         }
         .word-list span.crossed {
             text-decoration: line-through;
-            color: seagreen;
+            color: gray;
         }
     </style>
     <script>
@@ -78,12 +60,28 @@
                 }
             };
 
-            // Helper: Insert word into grid
+            // Helper: Check if a word can fit at a position
+            const canPlaceWord = (gridArray, word, row, col, direction) => {
+                if (direction === "H" && col + word.length > gridSize) return false;
+                if (direction === "V" && row + word.length > gridSize) return false;
+
+                for (let i = 0; i < word.length; i++) {
+                    const r = row + (direction === "V" ? i : 0);
+                    const c = col + (direction === "H" ? i : 0);
+                    if (gridArray[r][c] && gridArray[r][c] !== word[i]) {
+                        return false;
+                    }
+                }
+                return true;
+            };
+
+            // Helper: Place a word in the grid
             const placeWord = (gridArray, word, row, col, direction) => {
                 for (let i = 0; i < word.length; i++) {
-                    const r = row + (direction === "H" ? 0 : i);
+                    const r = row + (direction === "V" ? i : 0);
                     const c = col + (direction === "H" ? i : 0);
                     gridArray[r][c] = word[i];
+                    document.getElementById(`cell-${r}-${c}`).dataset.word = word;
                 }
             };
 
@@ -92,33 +90,52 @@
                 .fill(null)
                 .map(() => Array(gridSize).fill(null));
 
-            // Add words to grid
-            placeWord(gridArray, "HAPPY", 0, 0, "H");
-            placeWord(gridArray, "CHEERY", 2, 3, "H");
-            placeWord(gridArray, "CONTENT", 4, 5, "H");
-            placeWord(gridArray, "GLEEFUL", 6, 7, "H");
-            placeWord(gridArray, "JOYFUL", 8, 2, "H");
-            placeWord(gridArray, "DELIGHTED", 10, 4, "H");
-            placeWord(gridArray, "JOLLY", 12, 6, "H");
-
-            fillGridWithRandomLetters(gridArray);
-
             // Render the grid
-            gridArray.forEach((row) => {
+            for (let i = 0; i < gridSize; i++) {
                 const tr = document.createElement("tr");
-                row.forEach((cell) => {
+                for (let j = 0; j < gridSize; j++) {
                     const td = document.createElement("td");
-                    td.textContent = cell;
+                    td.id = `cell-${i}-${j}`;
                     tr.appendChild(td);
-                });
+                }
                 grid.appendChild(tr);
+            }
+
+            // Randomly place words
+            words.forEach((word) => {
+                let placed = false;
+                while (!placed) {
+                    const direction = Math.random() > 0.5 ? "H" : "V";
+                    const row = Math.floor(Math.random() * gridSize);
+                    const col = Math.floor(Math.random() * gridSize);
+
+                    if (canPlaceWord(gridArray, word, row, col, direction)) {
+                        placeWord(gridArray, word, row, col, direction);
+                        placed = true;
+                    }
+                }
             });
 
-            // Word list functionality
+            // Fill the rest of the grid with random letters
+            fillGridWithRandomLetters(gridArray);
+
+            // Add letters to the grid
+            for (let i = 0; i < gridSize; i++) {
+                for (let j = 0; j < gridSize; j++) {
+                    const cell = document.getElementById(`cell-${i}-${j}`);
+                    cell.textContent = gridArray[i][j];
+                }
+            }
+
+            // Word highlighting and crossing out
             const wordElements = document.querySelectorAll(".word-list span");
             wordElements.forEach((wordElem) => {
                 wordElem.addEventListener("click", () => {
+                    const word = wordElem.textContent.toUpperCase();
                     if (!wordElem.classList.contains("crossed")) {
+                        document.querySelectorAll(`[data-word='${word}']`).forEach((cell) => {
+                            cell.classList.add("highlight");
+                        });
                         wordElem.classList.add("crossed");
                     }
                 });
@@ -139,7 +156,5 @@
         <span>DELIGHTED</span>
         <span>JOLLY</span>
     </div>
-
-<hr class="hr.new1">
-<button style="font-family: 'Josefin Slab';" class="button button1" ><a href="https://bet-am.github.io/c1i/entry6.html">More Games!</a></button>    </body>
+</body>
 </html>
