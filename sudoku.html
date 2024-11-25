@@ -21,7 +21,6 @@
             grid-template-rows: repeat(9, 60px);
             gap: 0;
             border: 2px solid #000;
-            position: relative;
         }
         .sudoku-cell {
             width: 60px;
@@ -34,10 +33,7 @@
             justify-content: center;
             border: 1px solid #ccc;
             background-color: white;
-        }
-        .sudoku-cell:hover {
-            background-color: seaGreen;
-            color: white;
+            box-sizing: border-box;
         }
         .sudoku-cell.readonly {
             background-color: #e0e0e0;
@@ -54,27 +50,13 @@
             background-color: transparent;
             box-sizing: border-box;
         }
-        /* Add thick seagreen borders for 3x3 grids */
-        .sudoku-container div:nth-child(3n) {
+        /* Add thick seagreen vertical borders for 3x3 grids */
+        .sudoku-container > .sudoku-cell:nth-child(3n) {
             border-right: 3px solid seagreen;
         }
-        .sudoku-container div:nth-child(3n + 1) {
-            border-left: 3px solid seagreen;
-        }
-        .sudoku-container div:nth-child(-n+9) {
-            border-top: 3px solid seagreen;
-        }
-        .sudoku-container div:nth-child(n+73) {
-            border-bottom: 3px solid seagreen;
-        }
-        .sudoku-container div:nth-child(27n + 1),
-        .sudoku-container div:nth-child(27n + 2),
-        .sudoku-container div:nth-child(27n + 3) {
-            border-top: 3px solid seagreen;
-        }
-        .sudoku-container div:nth-child(27n - 24),
-        .sudoku-container div:nth-child(27n - 23),
-        .sudoku-container div:nth-child(27n - 22) {
+        /* Add thick seagreen horizontal borders for 3x3 grids */
+        .sudoku-container > .sudoku-cell:nth-child(n + 1):nth-child(-n + 27),
+        .sudoku-container > .sudoku-cell:nth-child(n + 55):nth-child(-n + 63) {
             border-bottom: 3px solid seagreen;
         }
     </style>
@@ -83,77 +65,26 @@
     <div class="sudoku-container" id="sudoku-container"></div>
 
     <script>
-        const letters = ["F", "L", "A", "M", "I", "N", "G", "O", "S"];
         const gridSize = 9;
-        const totalPrefilled = 30;
 
         const container = document.getElementById("sudoku-container");
 
-        // Generate a valid random grid with unique letters in each row, column, and 3x3 sub-grid
-        function generateRandomGrid() {
-            const grid = Array.from({ length: gridSize }, () => Array(gridSize).fill(""));
-
-            // Randomly place letters ensuring no repetition in row, column, and sub-grid
-            let positions = [];
-            while (positions.length < totalPrefilled) {
-                const randomRow = Math.floor(Math.random() * gridSize);
-                const randomCol = Math.floor(Math.random() * gridSize);
-                const randomLetter = letters[Math.floor(Math.random() * letters.length)];
-
-                if (!positions.some(pos => pos.row === randomRow && pos.col === randomCol) &&
-                    isValidPlacement(grid, randomRow, randomCol, randomLetter)) {
-                    grid[randomRow][randomCol] = randomLetter;
-                    positions.push({ row: randomRow, col: randomCol, letter: randomLetter });
-                }
-            }
-            return grid;
-        }
-
-        // Check if placing a letter in the cell is valid
-        function isValidPlacement(grid, row, col, letter) {
-            // Check row
-            if (grid[row].includes(letter)) return false;
-
-            // Check column
-            if (grid.some(r => r[col] === letter)) return false;
-
-            // Check sub-grid
-            const startRow = Math.floor(row / 3) * 3;
-            const startCol = Math.floor(col / 3) * 3;
-            for (let i = 0; i < 3; i++) {
-                for (let j = 0; j < 3; j++) {
-                    if (grid[startRow + i][startCol + j] === letter) return false;
-                }
-            }
-            return true;
-        }
-
-        // Generate the random grid
-        const grid = generateRandomGrid();
-
-        // Create the grid and add input fields
-        grid.forEach((row, rowIndex) => {
-            row.forEach((letter, colIndex) => {
+        // Generate the grid and populate it
+        for (let row = 0; row < gridSize; row++) {
+            for (let col = 0; col < gridSize; col++) {
                 const cell = document.createElement("div");
                 cell.classList.add("sudoku-cell");
 
-                // Create input field for each cell
+                // Add an input for user interaction
                 const input = document.createElement("input");
                 input.type = "text";
                 input.maxLength = 1;
-                input.classList.add("cell-input");
-                input.value = letter;
 
-                // Disable input in cells with pre-filled letters
-                if (letter) {
-                    cell.classList.add("readonly");
-                    input.disabled = true;
-                }
-
+                // Set the cell as editable
                 cell.appendChild(input);
                 container.appendChild(cell);
-            });
-        });
+            }
+        }
     </script>
 </body>
 </html>
