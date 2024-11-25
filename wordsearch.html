@@ -35,7 +35,6 @@
             display: inline-block;
             margin: 5px;
             font-weight: bold;
-            cursor: pointer;
         }
         .word-list span.crossed {
             text-decoration: line-through;
@@ -127,16 +126,26 @@
                 }
             }
 
-            // Word highlighting and crossing out
+            // Highlight words in the grid and cross out from the list
             const wordElements = document.querySelectorAll(".word-list span");
-            wordElements.forEach((wordElem) => {
-                wordElem.addEventListener("click", () => {
-                    const word = wordElem.textContent.toUpperCase();
-                    if (!wordElem.classList.contains("crossed")) {
+            const highlightedWords = new Set();
+
+            document.querySelectorAll("td").forEach((cell) => {
+                cell.addEventListener("click", () => {
+                    const word = cell.dataset.word;
+                    if (word && !highlightedWords.has(word)) {
                         document.querySelectorAll(`[data-word='${word}']`).forEach((cell) => {
                             cell.classList.add("highlight");
                         });
-                        wordElem.classList.add("crossed");
+                        highlightedWords.add(word);
+
+                        // Cross out the word in the list
+                        const wordElem = Array.from(wordElements).find(
+                            (elem) => elem.textContent === word
+                        );
+                        if (wordElem) {
+                            wordElem.classList.add("crossed");
+                        }
                     }
                 });
             });
