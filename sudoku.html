@@ -19,7 +19,7 @@
             display: grid;
             grid-template-columns: repeat(9, 60px);
             grid-template-rows: repeat(9, 60px);
-            gap: 5px;
+            gap: 1px; /* Make sure the gap is small enough to keep the lines clear */
             border: 2px solid #000;
         }
         .sudoku-cell {
@@ -74,19 +74,28 @@
         }
         /* Thicker borders around 3x3 sub-grids */
         .sudoku-container .sudoku-cell:nth-child(3n+1) {
-            border-left: 3px solid seagreen;
+            border-left: 3px solid seagreen; /* Left border for first column of each sub-grid */
         }
         .sudoku-container .sudoku-cell:nth-child(3),
         .sudoku-container .sudoku-cell:nth-child(6),
         .sudoku-container .sudoku-cell:nth-child(9) {
-            border-right: 3px solid seagreen;
+            border-right: 3px solid seagreen; /* Right border for the last column of each sub-grid */
         }
-        .sudoku-container .sudoku-cell:nth-child(9n+1) {
-            border-top: 3px solid seagreen;
+        .sudoku-container .sudoku-cell:nth-child(1),
+        .sudoku-container .sudoku-cell:nth-child(10),
+        .sudoku-container .sudoku-cell:nth-child(19),
+        .sudoku-container .sudoku-cell:nth-child(28),
+        .sudoku-container .sudoku-cell:nth-child(37),
+        .sudoku-container .sudoku-cell:nth-child(46),
+        .sudoku-container .sudoku-cell:nth-child(55),
+        .sudoku-container .sudoku-cell:nth-child(64),
+        .sudoku-container .sudoku-cell:nth-child(73) {
+            border-top: 3px solid seagreen; /* Top border for first row of each sub-grid */
         }
         .sudoku-container .sudoku-cell:nth-child(27),
-        .sudoku-container .sudoku-cell:nth-child(54) {
-            border-bottom: 3px solid seagreen;
+        .sudoku-container .sudoku-cell:nth-child(54),
+        .sudoku-container .sudoku-cell:nth-child(81) {
+            border-bottom: 3px solid seagreen; /* Bottom border for last row of each sub-grid */
         }
     </style>
 </head>
