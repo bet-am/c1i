@@ -19,7 +19,7 @@
             display: grid;
             grid-template-columns: repeat(9, 60px);
             grid-template-rows: repeat(9, 60px);
-            gap: 5px;
+            gap: 0;
             border: 2px solid #000;
         }
         .sudoku-cell {
@@ -52,6 +52,23 @@
             outline: none;
             background-color: transparent;
             box-sizing: border-box;
+        }
+        /* Add thick seagreen borders for 3x3 grids */
+        .sudoku-container div:nth-child(3n) {
+            border-right: 3px solid seagreen;
+        }
+        .sudoku-container div:nth-child(3n + 1) {
+            border-left: 3px solid seagreen;
+        }
+        .sudoku-container div:nth-child(27n + 1),
+        .sudoku-container div:nth-child(27n + 2),
+        .sudoku-container div:nth-child(27n + 3) {
+            border-top: 3px solid seagreen;
+        }
+        .sudoku-container div:nth-child(27n - 24),
+        .sudoku-container div:nth-child(27n - 23),
+        .sudoku-container div:nth-child(27n - 22) {
+            border-bottom: 3px solid seagreen;
         }
     </style>
 </head>
