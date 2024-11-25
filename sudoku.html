@@ -97,6 +97,14 @@
         .sudoku-container .sudoku-cell:nth-child(81) {
             border-bottom: 3px solid seagreen; /* Bottom border for last row of each sub-grid */
         }
+
+        /* Adding thicker horizontal borders after the 3rd and 6th rows */
+        .sudoku-container .sudoku-cell:nth-child(n+28):nth-child(-n+54) {
+            border-top: 3px solid seagreen; /* Add horizontal border after the 3rd row */
+        }
+        .sudoku-container .sudoku-cell:nth-child(n+55):nth-child(-n+81) {
+            border-top: 3px solid seagreen; /* Add horizontal border after the 6th row */
+        }
     </style>
 </head>
 <body>
