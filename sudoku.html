@@ -19,7 +19,7 @@
             display: grid;
             grid-template-columns: repeat(9, 60px);
             grid-template-rows: repeat(9, 60px);
-            gap: 1px; /* Make sure the gap is small enough to keep the lines clear */
+            gap: 5px;
             border: 2px solid #000;
         }
         .sudoku-cell {
@@ -42,25 +42,6 @@
             background-color: #e0e0e0;
             cursor: not-allowed;
         }
-        .incorrect {
-            background-color: crimson;
-            color: white;
-        }
-        .button-container {
-            margin-top: 20px;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: seagreen;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        button:hover {
-            background-color: darkgreen;
-        }
         input {
             width: 100%;
             height: 100%;
@@ -72,72 +53,59 @@
             background-color: transparent;
             box-sizing: border-box;
         }
-        /* Thicker borders around 3x3 sub-grids */
-        .sudoku-container .sudoku-cell:nth-child(3n+1) {
-            border-left: 3px solid seagreen; /* Left border for first column of each sub-grid */
-        }
-        .sudoku-container .sudoku-cell:nth-child(3),
-        .sudoku-container .sudoku-cell:nth-child(6),
-        .sudoku-container .sudoku-cell:nth-child(9) {
-            border-right: 3px solid seagreen; /* Right border for the last column of each sub-grid */
-        }
-        .sudoku-container .sudoku-cell:nth-child(1),
-        .sudoku-container .sudoku-cell:nth-child(10),
-        .sudoku-container .sudoku-cell:nth-child(19),
-        .sudoku-container .sudoku-cell:nth-child(28),
-        .sudoku-container .sudoku-cell:nth-child(37),
-        .sudoku-container .sudoku-cell:nth-child(46),
-        .sudoku-container .sudoku-cell:nth-child(55),
-        .sudoku-container .sudoku-cell:nth-child(64),
-        .sudoku-container .sudoku-cell:nth-child(73) {
-            border-top: 3px solid seagreen; /* Top border for first row of each sub-grid */
-        }
-        .sudoku-container .sudoku-cell:nth-child(27),
-        .sudoku-container .sudoku-cell:nth-child(54),
-        .sudoku-container .sudoku-cell:nth-child(81) {
-            border-bottom: 3px solid seagreen; /* Bottom border for last row of each sub-grid */
-        }
-
-        /* Adding thicker horizontal borders after the 3rd and 6th rows */
-        .sudoku-container .sudoku-cell:nth-child(n+28):nth-child(-n+54) {
-            border-top: 3px solid seagreen; /* Add horizontal border after the 3rd row */
-        }
-        .sudoku-container .sudoku-cell:nth-child(n+55):nth-child(-n+81) {
-            border-top: 3px solid seagreen; /* Add horizontal border after the 6th row */
-        }
     </style>
 </head>
 <body>
     <div class="sudoku-container" id="sudoku-container"></div>
-    <div class="button-container">
-        <button id="check-btn">Check Puzzle</button>
-    </div>
 
     <script>
         const letters = ["F", "L", "A", "M", "I", "N", "G", "O", "S"];
         const gridSize = 9;
-        
+        const totalPrefilled = 30;
+
         const container = document.getElementById("sudoku-container");
-        const checkButton = document.getElementById("check-btn");
 
-        // Pre-filled positions for the Sudoku puzzle
-        const filledPositions = [
-            { row: 0, col: 0, letter: "F" }, { row: 0, col: 1, letter: "L" }, { row: 0, col: 2, letter: "A" },
-            { row: 1, col: 1, letter: "M" }, { row: 1, col: 4, letter: "I" }, { row: 2, col: 3, letter: "N" },
-            { row: 3, col: 0, letter: "G" }, { row: 3, col: 2, letter: "O" }, { row: 3, col: 4, letter: "S" },
-            { row: 4, col: 0, letter: "F" }, { row: 4, col: 4, letter: "L" }, { row: 5, col: 1, letter: "A" },
-            { row: 5, col: 3, letter: "M" }, { row: 6, col: 0, letter: "I" }, { row: 6, col: 2, letter: "N" },
-            { row: 6, col: 4, letter: "G" }, { row: 7, col: 0, letter: "O" }, { row: 7, col: 2, letter: "S" },
-            { row: 8, col: 1, letter: "F" }, { row: 8, col: 3, letter: "L" }
-        ];
+        // Generate a valid random grid with unique letters in each row, column, and 3x3 sub-grid
+        function generateRandomGrid() {
+            const grid = Array.from({ length: gridSize }, () => Array(gridSize).fill(""));
 
-        // Initialize the grid as empty
-        const grid = Array.from({ length: gridSize }, () => Array(gridSize).fill(""));
+            // Randomly place letters ensuring no repetition in row, column, and sub-grid
+            let positions = [];
+            while (positions.length < totalPrefilled) {
+                const randomRow = Math.floor(Math.random() * gridSize);
+                const randomCol = Math.floor(Math.random() * gridSize);
+                const randomLetter = letters[Math.floor(Math.random() * letters.length)];
 
-        // Place pre-filled letters in the grid
-        filledPositions.forEach(pos => {
-            grid[pos.row][pos.col] = pos.letter;
-        });
+                if (!positions.some(pos => pos.row === randomRow && pos.col === randomCol) &&
+                    isValidPlacement(grid, randomRow, randomCol, randomLetter)) {
+                    grid[randomRow][randomCol] = randomLetter;
+                    positions.push({ row: randomRow, col: randomCol, letter: randomLetter });
+                }
+            }
+            return grid;
+        }
+
+        // Check if placing a letter in the cell is valid
+        function isValidPlacement(grid, row, col, letter) {
+            // Check row
+            if (grid[row].includes(letter)) return false;
+
+            // Check column
+            if (grid.some(r => r[col] === letter)) return false;
+
+            // Check sub-grid
+            const startRow = Math.floor(row / 3) * 3;
+            const startCol = Math.floor(col / 3) * 3;
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 3; j++) {
+                    if (grid[startRow + i][startCol + j] === letter) return false;
+                }
+            }
+            return true;
+        }
+
+        // Generate the random grid
+        const grid = generateRandomGrid();
 
         // Create the grid and add input fields
         grid.forEach((row, rowIndex) => {
@@ -156,53 +124,12 @@
                 if (letter) {
                     cell.classList.add("readonly");
                     input.disabled = true;
-                } else {
-                    input.addEventListener("input", () => {
-                        // Allow user to correct their input
-                        input.classList.remove("incorrect");
-                    });
-
-                    // Restrict input to specific letters (F, L, A, M, I, N, G, O, S)
-                    input.addEventListener("keypress", (e) => {
-                        const allowedLetters = "FLAMINGOS";
-                        const char = String.fromCharCode(e.which).toUpperCase();
-                        if (!allowedLetters.includes(char)) {
-                            e.preventDefault();
-                        }
-                    });
                 }
 
                 cell.appendChild(input);
                 container.appendChild(cell);
             });
         });
-
-        // Function to check the puzzle for correctness
-        function checkPuzzle() {
-            let isCorrect = true;
-
-            const cells = document.querySelectorAll(".sudoku-cell input");
-
-            cells.forEach((input, index) => {
-                const correctLetter = grid[Math.floor(index / gridSize)][index % gridSize]; // Get the correct letter from the grid
-                const userInput = input.value.toUpperCase();
-
-                if (userInput !== correctLetter) {
-                    isCorrect = false;
-                    input.classList.add("incorrect");
-                }
-            });
-
-            if (isCorrect) {
-                alert("Congratulations! The puzzle is correct.");
-            } else {
-                alert("Some letters are incorrect. Please check and correct them.");
-            }
-        }
-
-        // Add event listener to the check button
-        checkButton.addEventListener("click", checkPuzzle);
-
     </script>
 </body>
 </html>
