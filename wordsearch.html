@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link href='https://fonts.googleapis.com/css?family=Josefin Slab' rel='stylesheet'>
+   <link href='https://fonts.googleapis.com/css?family=Josefin Slab' rel='stylesheet'>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Word Search</title>
+    <title style="color:seagreen;">Word Search</title>
     <style>
         body {
             font-family: 'Josefin Slab';
             text-align: center;
             margin: 20px;
-           background-color: lemonchiffon   }
+        }
         table {
             margin: 0 auto;
-            border-collapse: collapse;  }
+            border-collapse: collapse;
+        }
         td {
             width: 30px;
             height: 30px;
@@ -22,10 +23,10 @@
             border: 1px solid #ccc;
             font-size: 18px;
             font-weight: bold;
-            cursor: default;
+            cursor: pointer;
         }
         td.found {
-            background-color: yellow;
+            background-color: seagreen;
         }
         .word-list {
             margin-top: 20px;
@@ -39,98 +40,75 @@
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const words = ["HAPPY", "CHEERY", "CONTENT", "GLEEFUL", "JOYFUL", "DELIGHTED", "JOLLY"];
-            const cells = document.querySelectorAll("td");
+            const gridSize = 20;
+            const grid = document.getElementById("word-search-grid");
 
-            cells.forEach(cell => {
-                cell.addEventListener("click", () => {
-                    const word = cell.dataset.word;
-                    if (word && words.includes(word)) {
-                        document.querySelectorAll(`[data-word='${word}']`).forEach(el => el.classList.add("found"));
-                        const wordElem = document.getElementById(word);
-                        if (wordElem) wordElem.style.textDecoration = "line-through";
+            // Helper: Fill grid with random letters
+            const fillGridWithRandomLetters = (gridArray) => {
+                const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                for (let i = 0; i < gridSize; i++) {
+                    for (let j = 0; j < gridSize; j++) {
+                        if (!gridArray[i][j]) {
+                            gridArray[i][j] = alphabet[Math.floor(Math.random() * alphabet.length)];
+                        }
                     }
+                }
+            };
+
+            // Helper: Insert word into grid
+            const placeWord = (gridArray, word, row, col, direction) => {
+                for (let i = 0; i < word.length; i++) {
+                    const r = row + (direction === "H" ? 0 : i);
+                    const c = col + (direction === "H" ? i : 0);
+                    gridArray[r][c] = word[i];
+                }
+            };
+
+            // Initialize empty grid
+            const gridArray = Array(gridSize)
+                .fill(null)
+                .map(() => Array(gridSize).fill(null));
+
+            // Add words to grid
+            placeWord(gridArray, "HAPPY", 0, 0, "H");
+            placeWord(gridArray, "CHEERY", 2, 3, "H");
+            placeWord(gridArray, "CONTENT", 5, 6, "H");
+            placeWord(gridArray, "GLEEFUL", 8, 10, "H");
+            placeWord(gridArray, "JOYFUL", 11, 3, "H");
+            placeWord(gridArray, "DELIGHTED", 14, 5, "H");
+            placeWord(gridArray, "JOLLY", 16, 12, "H");
+
+            fillGridWithRandomLetters(gridArray);
+
+            // Render the grid
+            gridArray.forEach((row) => {
+                const tr = document.createElement("tr");
+                row.forEach((cell) => {
+                    const td = document.createElement("td");
+                    td.textContent = cell;
+                    tr.appendChild(td);
                 });
+                grid.appendChild(tr);
             });
         });
     </script>
 </head>
 <body>
     <h1>Word Search Puzzle</h1>
-    <table>
-        <tr>
-            <td data-word="HAPPY">H</td>
-            <td data-word="HAPPY">A</td>
-            <td data-word="HAPPY">P</td>
-            <td data-word="HAPPY">P</td>
-            <td data-word="HAPPY">Y</td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td data-word="CHEERY">C</td>
-            <td data-word="CHEERY">H</td>
-            <td data-word="CHEERY">E</td>
-            <td data-word="CHEERY">E</td>
-            <td data-word="CHEERY">R</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td data-word="CONTENT">C</td>
-            <td data-word="CONTENT">O</td>
-            <td data-word="CONTENT">N</td>
-            <td data-word="CONTENT">T</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td data-word="GLEEFUL">G</td>
-            <td data-word="GLEEFUL">L</td>
-            <td data-word="GLEEFUL">E</td>
-        </tr>
-        <tr>
-            <td data-word="JOYFUL">J</td>
-            <td data-word="JOYFUL">O</td>
-            <td data-word="JOYFUL">Y</td>
-            <td data-word="JOYFUL">F</td>
-            <td data-word="JOYFUL">U</td>
-            <td data-word="JOYFUL">L</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td data-word="DELIGHTED">D</td>
-            <td data-word="DELIGHTED">E</td>
-            <td data-word="DELIGHTED">L</td>
-            <td data-word="DELIGHTED">I</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td data-word="JOLLY">J</td>
-            <td data-word="JOLLY">O</td>
-            <td data-word="JOLLY">L</td>
-            <td data-word="JOLLY">L</td>
-            <td data-word="JOLLY">Y</td>
-        </tr>
-    </table>
+    <table id="word-search-grid"></table>
     <div class="word-list">
         <h3>Find these words:</h3>
-        <span id="HAPPY">HAPPY</span>
-        <span id="CHEERY">CHEERY</span>
-        <span id="CONTENT">CONTENT</span>
-        <span id="GLEEFUL">GLEEFUL</span>
-        <span id="JOYFUL">JOYFUL</span>
-        <span id="DELIGHTED">DELIGHTED</span>
-        <span id="JOLLY">JOLLY</span>
+        <span>HAPPY</span>
+        <span>CHEERY</span>
+        <span>CONTENT</span>
+        <span>GLEEFUL</span>
+        <span>JOYFUL</span>
+        <span>DELIGHTED</span>
+        <span>JOLLY</span>
     </div>
+</body>
+</html>
+
 <hr class="hr.new1">
 <button style="font-family: 'Josefin Slab';" class="button button1" ><a href="https://bet-am.github.io/c1i/entry6.html">More Games!</a></button>    </body>
 </html>
