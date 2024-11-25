@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link href='https://fonts.googleapis.com/css?family=Josefin Slab' rel='stylesheet'>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Search</title>
+    <style>
+        body {
+            font-family: 'Josefin Slab';
+            text-align: center;
+            margin: 20px;
+           background-color: lemonchiffon   }
+        table {
+            margin: 0 auto;
+            border-collapse: collapse;  }
+        td {
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            vertical-align: middle;
+            border: 1px solid #ccc;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: default;
+        }
+        td.found {
+            background-color: yellow;
+        }
+        .word-list {
+            margin-top: 20px;
+        }
+        .word-list span {
+            display: inline-block;
+            margin: 5px;
+            font-weight: bold;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const words = ["HAPPY", "CHEERY", "CONTENT", "GLEEFUL", "JOYFUL", "DELIGHTED", "JOLLY"];
+            const cells = document.querySelectorAll("td");
+
+            cells.forEach(cell => {
+                cell.addEventListener("click", () => {
+                    const word = cell.dataset.word;
+                    if (word && words.includes(word)) {
+                        document.querySelectorAll(`[data-word='${word}']`).forEach(el => el.classList.add("found"));
+                        const wordElem = document.getElementById(word);
+                        if (wordElem) wordElem.style.textDecoration = "line-through";
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>Word Search Puzzle</h1>
+    <table>
+        <tr>
+            <td data-word="HAPPY">H</td>
+            <td data-word="HAPPY">A</td>
+            <td data-word="HAPPY">P</td>
+            <td data-word="HAPPY">P</td>
+            <td data-word="HAPPY">Y</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td data-word="CHEERY">C</td>
+            <td data-word="CHEERY">H</td>
+            <td data-word="CHEERY">E</td>
+            <td data-word="CHEERY">E</td>
+            <td data-word="CHEERY">R</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td data-word="CONTENT">C</td>
+            <td data-word="CONTENT">O</td>
+            <td data-word="CONTENT">N</td>
+            <td data-word="CONTENT">T</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td data-word="GLEEFUL">G</td>
+            <td data-word="GLEEFUL">L</td>
+            <td data-word="GLEEFUL">E</td>
+        </tr>
+        <tr>
+            <td data-word="JOYFUL">J</td>
+            <td data-word="JOYFUL">O</td>
+            <td data-word="JOYFUL">Y</td>
+            <td data-word="JOYFUL">F</td>
+            <td data-word="JOYFUL">U</td>
+            <td data-word="JOYFUL">L</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td data-word="DELIGHTED">D</td>
+            <td data-word="DELIGHTED">E</td>
+            <td data-word="DELIGHTED">L</td>
+            <td data-word="DELIGHTED">I</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td data-word="JOLLY">J</td>
+            <td data-word="JOLLY">O</td>
+            <td data-word="JOLLY">L</td>
+            <td data-word="JOLLY">L</td>
+            <td data-word="JOLLY">Y</td>
+        </tr>
+    </table>
+    <div class="word-list">
+        <h3>Find these words:</h3>
+        <span id="HAPPY">HAPPY</span>
+        <span id="CHEERY">CHEERY</span>
+        <span id="CONTENT">CONTENT</span>
+        <span id="GLEEFUL">GLEEFUL</span>
+        <span id="JOYFUL">JOYFUL</span>
+        <span id="DELIGHTED">DELIGHTED</span>
+        <span id="JOLLY">JOLLY</span>
+    </div>
+<hr class="hr.new1">
+<button style="font-family: 'Josefin Slab';" class="button button1" ><a href="https://bet-am.github.io/c1i/entry6.html">More Games!</a></button>    </body>
+</html>
