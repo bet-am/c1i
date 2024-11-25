@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Letter Sudoku</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .sudoku-container {
+            display: grid;
+            grid-template-columns: repeat(9, 60px);
+            grid-template-rows: repeat(9, 60px);
+            gap: 5px;
+            border: 2px solid #000;
+        }
+        .sudoku-cell {
+            width: 60px;
+            height: 60px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #ccc;
+            background-color: white;
+            cursor: pointer;
+        }
+        .sudoku-cell:hover {
+            background-color: seaGreen;
+            color: white;
+        }
+        .sudoku-cell.readonly {
+            background-color: #e0e0e0;
+            cursor: not-allowed;
+        }
+        .readonly input {
+            pointer-events: none;
+        }
+        .incorrect {
+            background-color: crimson;
+            color: white;
+        }
+        .button-container {
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: seagreen;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: darkgreen;
+        }
+    </style>
+</head>
+<body>
+    <div class="sudoku-container" id="sudoku-container"></div>
+    <div class="button-container">
+        <button id="check-btn">Check Puzzle</button>
+    </div>
+
+    <script>
+        const letters = ["F", "L", "A", "M", "I", "N", "G", "O", "S"];
+        const gridSize = 9;
+
+        const container = document.getElementById("sudoku-container");
+        const checkButton = document.getElementById("check-btn");
+
+        // Helper function to shuffle an array (used to randomize grid rows)
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // Helper function to generate a randomized Sudoku grid
+        function generateSudokuGrid() {
+            const grid = [];
+
+            // Create a 9x9 grid with random rows of letters
+            for (let i = 0; i < gridSize; i++) {
+                let row = [...letters]; // Make a copy of the letters array
+                shuffleArray(row); // Shuffle the letters in the row
+                grid.push(row);
+            }
+
+            return grid;
+        }
+
+        // Create a new grid
+        const grid = generateSudokuGrid();
+
+        // Create the grid and add input fields
+        grid.forEach((row, rowIndex) => {
+            row.forEach((letter, colIndex) => {
+                const cell = document.createElement("div");
+                cell.classList.add("sudoku-cell");
+
+                // Create input field for each cell
+                const input = document.createElement("input");
+                input.type = "text";
+                input.maxLength = 1;
+                input.classList.add("cell-input");
+                input.value = letter;
+
+                // Prevent editing in readonly cells
+                if (Math.random() < 0.2) { // 20% of cells will be readonly
+                    cell.classList.add("readonly");
+                    input.disabled = true;
+                }
+
+                input.addEventListener("input", () => {
+                    // Allow user to correct their input
+                    input.classList.remove("incorrect");
+                });
+
+                cell.appendChild(input);
+                container.appendChild(cell);
+            });
+        });
+
+        // Function to check the puzzle for correctness
+        function checkPuzzle() {
+            let isCorrect = true;
+
+            const cells = document.querySelectorAll(".sudoku-cell input");
+
+            cells.forEach((input, index) => {
+                const correctLetter = grid[Math.floor(index / gridSize)][index % gridSize]; // Get the correct letter from the grid
+                const userInput = input.value.toUpperCase();
+
+                if (userInput !== correctLetter) {
+                    isCorrect = false;
+                    input.classList.add("incorrect");
+                }
+            });
+
+            if (isCorrect) {
+                alert("Congratulations! The puzzle is correct.");
+            } else {
+                alert("Some letters are incorrect. Please check and correct them.");
+            }
+        }
+
+        // Add event listener to the check button
+        checkButton.addEventListener("click", checkPuzzle);
+
+    </script>
+</body>
+</html>
