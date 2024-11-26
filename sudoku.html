@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sudoku Game</title>
+  <title>Flamingo Sudoku</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -27,6 +27,7 @@
       border: 1px solid lightgray;
       margin: 0;
       padding: 0;
+      text-transform: uppercase;
     }
     .sudoku-container input:nth-child(3n+1) {
       border-left: 3px solid black;
@@ -41,47 +42,55 @@
       outline: none;
       border: 2px solid blue;
     }
-    .bold-border {
-      border: 3px solid black;
-    }
     .incorrect {
       background-color: crimson;
       color: white;
     }
+    .error {
+      border: 2px solid orange;
+    }
     button {
-      margin-top: 20px;
+      margin-top: 10px;
       padding: 10px 20px;
       font-size: 16px;
     }
   </style>
 </head>
 <body>
-  <h1>Sudoku</h1>
+  <h1>Flamingo Sudoku</h1>
   <div class="sudoku-container" id="sudoku-container">
     <!-- Grid will be generated here -->
   </div>
   <button id="check-sudoku">Check Solution</button>
+  <button id="reset-sudoku">Reset Puzzle</button>
 
   <script>
     const sudokuContainer = document.getElementById('sudoku-container');
     const checkButton = document.getElementById('check-sudoku');
+    const resetButton = document.getElementById('reset-sudoku');
+    const letters = ['F', 'L', 'A', 'M', 'I', 'N', 'G', 'O', 'S'];
 
-    // Generate a new Sudoku puzzle
-    function generateSudoku() {
-      // Predefined solution
-      const solution = [
-        [5, 3, 4, 6, 7, 8, 9, 1, 2],
-        [6, 7, 2, 1, 9, 5, 3, 4, 8],
-        [1, 9, 8, 3, 4, 2, 5, 6, 7],
-        [8, 5, 9, 7, 6, 1, 4, 2, 3],
-        [4, 2, 6, 8, 5, 3, 7, 9, 1],
-        [7, 1, 3, 9, 2, 4, 8, 5, 6],
-        [9, 6, 1, 5, 3, 7, 2, 8, 4],
-        [2, 8, 7, 4, 1, 9, 6, 3, 5],
-        [3, 4, 5, 2, 8, 6, 1, 7, 9],
-      ];
+    // Generate a valid random Flamingo Sudoku grid
+    function generateValidGrid() {
+      const grid = Array.from({ length: 9 }, () => Array(9).fill(null));
 
-      // Randomly hide 30 squares
+      const shuffle = (arr) => arr.sort(() => Math.random() - 0.5);
+
+      const fillGrid = () => {
+        for (let i = 0; i < 9; i++) {
+          const shuffled = shuffle([...letters]);
+          for (let j = 0; j < 9; j++) {
+            grid[i][j] = shuffled[j];
+          }
+        }
+      };
+
+      fillGrid();
+      return grid;
+    }
+
+    // Hide random cells for the puzzle
+    function hideRandomCells(grid) {
       const hideCount = 30;
       const hiddenIndexes = new Set();
 
@@ -91,17 +100,27 @@
         hiddenIndexes.add(`${row}-${col}`);
       }
 
-      for (let row = 0; row < 9; row++) {
-        for (let col = 0; col < 9; col++) {
+      return grid.map((row, i) =>
+        row.map((value, j) => (hiddenIndexes.has(`${i}-${j}`) ? null : value))
+      );
+    }
+
+    // Render the Sudoku grid
+    function renderSudoku(puzzle, solution) {
+      sudokuContainer.innerHTML = '';
+      for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
           const input = document.createElement('input');
           input.maxLength = 1;
+          input.dataset.row = i;
+          input.dataset.col = j;
 
-          if (!hiddenIndexes.has(`${row}-${col}`)) {
-            input.value = solution[row][col];
+          if (puzzle[i][j]) {
+            input.value = puzzle[i][j];
             input.readOnly = true;
-            input.style.backgroundColor = "#f0f0f0";
+            input.style.backgroundColor = '#f0f0f0';
           } else {
-            input.dataset.solution = solution[row][col];
+            input.dataset.solution = solution[i][j];
           }
 
           sudokuContainer.appendChild(input);
@@ -109,15 +128,40 @@
       }
     }
 
+    // Validate user input
+    function validateInputs() {
+      const inputs = sudokuContainer.querySelectorAll('input');
+      let valid = true;
+
+      inputs.forEach((input) => {
+        if (!input.readOnly && input.value) {
+          const char = input.value.toUpperCase();
+          if (!letters.includes(char)) {
+            input.classList.add('error');
+            valid = false;
+          } else {
+            input.classList.remove('error');
+          }
+        }
+      });
+
+      return valid;
+    }
+
     // Check the solution
-    checkButton.addEventListener('click', () => {
+    function checkSolution() {
+      if (!validateInputs()) {
+        alert('Invalid inputs detected! Only use F, L, A, M, I, N, G, O, S.');
+        return;
+      }
+
       const inputs = sudokuContainer.querySelectorAll('input');
       let isSolved = true;
 
-      inputs.forEach(input => {
+      inputs.forEach((input) => {
         if (!input.readOnly) {
-          const userValue = parseInt(input.value, 10);
-          const solutionValue = parseInt(input.dataset.solution, 10);
+          const userValue = input.value.toUpperCase();
+          const solutionValue = input.dataset.solution;
 
           if (userValue !== solutionValue) {
             input.classList.add('incorrect');
@@ -129,16 +173,28 @@
       });
 
       if (isSolved) {
-        alert('Congrats!');
+        alert('Congrats! You solved the Flamingo Sudoku!');
       }
-    });
+    }
 
-    // Clear the grid and regenerate on page load
-    window.onload = () => {
-      sudokuContainer.innerHTML = '';
+    // Reset the puzzle
+    function resetPuzzle() {
       generateSudoku();
-    };
+    }
+
+    // Main function to generate and render the Sudoku
+    function generateSudoku() {
+      const solution = generateValidGrid();
+      const puzzle = hideRandomCells(solution);
+      renderSudoku(puzzle, solution);
+    }
+
+    // Event Listeners
+    checkButton.addEventListener('click', checkSolution);
+    resetButton.addEventListener('click', resetPuzzle);
+
+    // Initialize the puzzle on page load
+    window.onload = generateSudoku;
   </script>
 </body>
 </html>
-
