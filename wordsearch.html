@@ -1,220 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link href='https://fonts.googleapis.com/css?family=Josefin Slab' rel='stylesheet'>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crossword Puzzle</title>
     <style>
         body {
-            font-family: 'Josefin Slab';
-            margin: 0;
-            background-color: lemonchiffon;
+            font-family: Arial, sans-serif;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            height: 100vh;
+            margin-top: 20px;
         }
-        table {
-            border-collapse: collapse;  
+        #puzzle-container {
+            display: grid;
+            grid-template-columns: repeat(12, 30px);
+            grid-gap: 1px;
+            margin-bottom: 20px;
         }
-        td {
+        .cell {
             width: 30px;
             height: 30px;
             text-align: center;
-            vertical-align: middle;
+            font-size: 18px;
             border: 1px solid #ccc;
+            text-transform: uppercase;
+            background-color: seagreen;
+        }
+        .cell input {
+            width: 100%;
+            height: 100%;
+            border: none;
+            text-align: center;
+            font-size: 18px;
+            text-transform: uppercase;
+        }
+        .number {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            font-size: 10px;
+            color: black;
+        }
+        .clue-list {
+            margin-top: 20px;
+        }
+        .clue-list h3 {
+            margin-bottom: 5px;
+        }
+        .clue-list ol {
+            list-style: none;
+            padding: 0;
+        }
+        .clue-list li {
+            margin: 5px 0;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .incorrect {
+            background-color: palevioletred;
+        }
+        #message {
+            margin-top: 15px;
             font-size: 18px;
             font-weight: bold;
-            cursor: pointer;
         }
-        td.highlight {
-            background-color: seagreen;
-            color: lemonchiffon;
-        }
-        .word-list {
-            margin-top: 20px;
-            text-align: center;
-        }
-        .word-list span {
-            display: inline-block;
-            margin: 5px;
-            font-weight: bold;
-        }
-        .word-list span.crossed {
-            text-decoration: line-through;
-            color: seagreen;
-        }
-        .button {
-            border: none;
-            color: white;
-            padding: 15px 32px;
-            text-align: center;
-            display: inline-block;
-            font-family: 'Josefin Slab';
-            font-size: 16px;
-            margin: 10px 2px;
-            cursor: pointer;
-        }
-        .button1 {
-            background-color: yellowgreen;
-        }
-        a:link, a:visited {
-            color: seagreen;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: seagreen wavy underline;
-        }
-        h3 {
-            margin: 10px 0;
-        }
-         hr {
-  border-width: 3 px;
-  border-color: sea green
-}
-      hr.new1 {
-  border-top: 1px solid seagreen;
-}
     </style>
-    <script>
-
-        document.addEventListener("DOMContentLoaded", () => {
-            const words = ["HAPPY", "CHEERY", "CONTENT", "GLEEFUL", "JOYFUL", "DELIGHTED", "JOLLY"];
-            const gridSize = 15;
-            const grid = document.getElementById("word-search-grid");
-
-            // Helper: Fill grid with random letters
-            const fillGridWithRandomLetters = (gridArray) => {
-                const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-                for (let i = 0; i < gridSize; i++) {
-                    for (let j = 0; j < gridSize; j++) {
-                        if (!gridArray[i][j]) {
-                            gridArray[i][j] = alphabet[Math.floor(Math.random() * alphabet.length)];
-                        }
-                    }
-                }
-            };
-
-            // Helper: Check if a word can fit at a position
-            const canPlaceWord = (gridArray, word, row, col, direction) => {
-                if (direction === "H" && col + word.length > gridSize) return false;
-                if (direction === "V" && row + word.length > gridSize) return false;
-
-                for (let i = 0; i < word.length; i++) {
-                    const r = row + (direction === "V" ? i : 0);
-                    const c = col + (direction === "H" ? i : 0);
-                    if (gridArray[r][c] && gridArray[r][c] !== word[i]) {
-                        return false;
-                    }
-                }
-                return true;
-            };
-
-            // Helper: Place a word in the grid
-            const placeWord = (gridArray, word, row, col, direction) => {
-                for (let i = 0; i < word.length; i++) {
-                    const r = row + (direction === "V" ? i : 0);
-                    const c = col + (direction === "H" ? i : 0);
-                    gridArray[r][c] = word[i];
-                    document.getElementById(`cell-${r}-${c}`).dataset.word = word;
-                }
-            };
-
-            // Initialize empty grid
-            const gridArray = Array(gridSize)
-                .fill(null)
-                .map(() => Array(gridSize).fill(null));
-
-            // Render the grid
-            for (let i = 0; i < gridSize; i++) {
-                const tr = document.createElement("tr");
-                for (let j = 0; j < gridSize; j++) {
-                    const td = document.createElement("td");
-                    td.id = `cell-${i}-${j}`;
-                    tr.appendChild(td);
-                }
-                grid.appendChild(tr);
-            }
-
-            // Randomly place words
-            words.forEach((word) => {
-                let placed = false;
-                while (!placed) {
-                    const direction = Math.random() > 0.5 ? "H" : "V";
-                    const row = Math.floor(Math.random() * gridSize);
-                    const col = Math.floor(Math.random() * gridSize);
-
-                    if (canPlaceWord(gridArray, word, row, col, direction)) {
-                        placeWord(gridArray, word, row, col, direction);
-                        placed = true;
-                    }
-                }
-            });
-
-            // Fill the rest of the grid with random letters
-            fillGridWithRandomLetters(gridArray);
-
-            // Add letters to the grid
-            for (let i = 0; i < gridSize; i++) {
-                for (let j = 0; j < gridSize; j++) {
-                    const cell = document.getElementById(`cell-${i}-${j}`);
-                    cell.textContent = gridArray[i][j];
-                }
-            }
-
-            // Highlight words in the grid and cross out from the list
-            const wordElements = document.querySelectorAll(".word-list span");
-            const highlightedWords = new Set();
-
-            document.querySelectorAll("td").forEach((cell) => {
-                cell.addEventListener("click", () => {
-                    const word = cell.dataset.word;
-                    if (word && !highlightedWords.has(word)) {
-                        document.querySelectorAll(`[data-word='${word}']`).forEach((cell) => {
-                            cell.classList.add("highlight");
-                        });
-                        highlightedWords.add(word);
-
-                        // Cross out the word in the list
-                        const wordElem = Array.from(wordElements).find(
-                            (elem) => elem.textContent === word
-                        );
-                        if (wordElem) {
-                            wordElem.classList.add("crossed");
-                        }
-                    }
-                });
-            });
-        });
-    </script>
 </head>
 <body>
-    <hr class="hr.new1">
-    <h1 style="color:seagreen;">
-        Word Search!
-    </h1>
-    <table id="word-search-grid"></table>
-    <div class="word-list">
-        <h3 style="color:seagreen;">
-            Find these words:
-        </h3>
-        
-        <span>CHEERY</span>
-        <span>CONTENT</span>
-        <span>DELIGHTED</span>
-        <span>GLEEFUL</span>
-        <span>HAPPY</span>
-        <span>JOLLY</span>
-        <span>JOYFUL</span>
-        
-        
+    <h1>Crossword Puzzle</h1>
+    <div id="puzzle-container">
+        <!-- Crossword puzzle grid will be dynamically generated -->
     </div>
-    <h3 style="color:seagreen;"> 
-        Refresh to play again! </h3>
-<hr class="hr.new1">
-    <button class="button button1">
-        <a href="https://bet-am.github.io/c1i/entry6.html">Play More Games!</a>
-    </button>
+    <button onclick="checkPuzzle()">Check Puzzle</button>
+    <div id="message"></div>
+    <div class="clue-list">
+        <h3>Across</h3>
+        <ol>
+            <li>1. What a group of ladybugs is called.</li>
+            <li>3. The devil who wears Prada.</li>
+            <li>5. The part of a cat most similar to human fingerprints.</li>
+            <li>7. Yes in Spanish and then French.</li>
+            <li>9. Goldilocks and the___.</li>
+        </ol>
+        <h3>Down</h3>
+        <ol>
+            <li>2. How many cups of water you should drink per day.</li>
+            <li>4. What nutrient are oranges full of?</li>
+            <li>6. Who invented the lightbulb?</li>
+            <li>8. The part of your body that is impossible to lick.</li>
+            <li>10. The red lucky charm.</li>
+        </ol>
+    </div>
+
+    <script>
+        const puzzleData = [
+            { row: 0, col: 0, answer: "loveliness", direction: "across", number: 1 },
+            { row: 1, col: 0, answer: "eight", direction: "down", number: 2 },
+            { row: 2, col: 0, answer: "merylstreep", direction: "across", number: 3 },
+            { row: 3, col: 3, answer: "vitaminc", direction: "down", number: 4 },
+            { row: 4, col: 2, answer: "nose", direction: "across", number: 5 },
+            { row: 5, col: 1, answer: "edison", direction: "down", number: 6 },
+            { row: 6, col: 4, answer: "sioui", direction: "across", number: 7 },
+            { row: 7, col: 3, answer: "elbow", direction: "down", number: 8 },
+            { row: 8, col: 0, answer: "threebears", direction: "across", number: 9 },
+            { row: 9, col: 4, answer: "balloon", direction: "down", number: 10 }
+        ];
+
+        const rows = 12;
+        const cols = 12;
+        const puzzleContainer = document.getElementById("puzzle-container");
+
+        function createGrid() {
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    const cell = document.createElement("div");
+                    cell.classList.add("cell");
+                    cell.dataset.row = r;
+                    cell.dataset.col = c;
+                    const input = document.createElement("input");
+                    input.type = "text";
+                    input.maxLength = 1;
+                    cell.appendChild(input);
+                    puzzleContainer.appendChild(cell);
+                }
+            }
+        }
+
+        function fillAnswers() {
+            puzzleData.forEach(({ row, col, answer, direction, number }) => {
+                for (let i = 0; i < answer.length; i++) {
+                    const r = direction === "across" ? row : row + i;
+                    const c = direction === "across" ? col + i : col;
+                    const cell = document.querySelector(`div[data-row="${r}"][data-col="${c}"]`);
+                    const input = cell.querySelector("input");
+                    input.dataset.answer = answer[i];
+
+                    // Add number label to the starting position
+                    if (i === 0) {
+                        const numberLabel = document.createElement("span");
+                        numberLabel.classList.add("number");
+                        numberLabel.textContent = number;
+                        cell.appendChild(numberLabel);
+                    }
+                }
+            });
+        }
+
+        function checkPuzzle() {
+            let correct = true;
+            const cells = document.querySelectorAll(".cell");
+
+            cells.forEach((cell) => {
+                const input = cell.querySelector("input");
+                if (input.dataset.answer) {
+                    if (input.value.toLowerCase() === input.dataset.answer.toLowerCase()) {
+                        input.classList.remove("incorrect");
+                    } else {
+                        input.classList.add("incorrect");
+                        correct = false;
+                    }
+                }
+            });
+
+            const message = document.getElementById("message");
+            if (correct) {
+                message.textContent = "Congrats! You solved the puzzle!";
+                message.style.color = "green";
+            } else {
+                message.textContent = "Some answers are incorrect. Try again!";
+                message.style.color = "red";
+            }
+        }
+
+        createGrid();
+        fillAnswers();
+    </script>
 </body>
 </html>
