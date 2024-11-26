@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <link href='https://fonts.googleapis.com/css?family=Josefin Slab' rel='stylesheet'>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Flamingo Sudoku</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Josefin Slab';
       display: flex;
       flex-direction: column;
       align-items: center;
       margin-top: 20px;
+      background-color: lemonchiffon
     }
     .sudoku-container {
       display: grid;
@@ -24,23 +25,23 @@
       height: 48px;
       text-align: center;
       font-size: 18px;
-      border: 1px solid lightgray;
+      border: 1px solid seagreen;
       margin: 0;
       padding: 0;
       text-transform: uppercase;
     }
     .sudoku-container input:nth-child(3n+1) {
-      border-left: 3px solid black;
+      border-left: 3px seagreen;
     }
     .sudoku-container input:nth-child(-n+9):nth-child(3n) {
-      border-right: 3px solid black;
+      border-right: 3px seagreen;
     }
     .sudoku-container input:nth-child(n+19):nth-child(-n+27) {
-      border-bottom: 3px solid black;
+      border-bottom: 3px seagreen;
     }
     .sudoku-container input:focus {
       outline: none;
-      border: 2px solid blue;
+      border: 2px seagreen;
     }
     .incorrect {
       background-color: crimson;
@@ -49,20 +50,36 @@
     .error {
       border: 2px solid orange;
     }
-    button {
-      margin-top: 10px;
-      padding: 10px 20px;
-      font-size: 16px;
-    }
+     .button {
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  font-family: 'Josephine Slab';
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer }
+      .button1 {background-color: yellowgreen }
+    a:link {
+  color: seagreen; }
+    a:visited {
+  color: seagreen; }
+    a:hover {
+  text-decoration: seagreen wavy underline; }
+      hr {
+  border-width: 3 px;
+  border-color: sea green
+}
   </style>
 </head>
 <body>
-  <h1>Flamingo Sudoku</h1>
+  <h1 style="color:seagreen;">Flamingo Sudoku</h1>
   <div class="sudoku-container" id="sudoku-container">
     <!-- Grid will be generated here -->
   </div>
-  <button id="check-sudoku">Check Solution</button>
-  <button id="reset-sudoku">Reset Puzzle</button>
+  <button style="font-family: 'Josefin Slab';" class="button button1"id="check-sudoku">Check Solution</button>
+  <button style="font-family: 'Josefin Slab';" class="button button1" id="reset-sudoku">Reset Puzzle</button>
 
   <script>
     const sudokuContainer = document.getElementById('sudoku-container');
