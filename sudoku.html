@@ -18,26 +18,31 @@
       grid-template-columns: repeat(9, 50px);
       grid-template-rows: repeat(9, 50px);
       gap: 0;
-      border: 3px solid black;
+      border: 5px solid black; /* Outer border */
     }
     .sudoku-container input {
       width: 48px;
       height: 48px;
       text-align: center;
       font-size: 18px;
-      border: 1px solid seagreen;
+      border: 1px solid seagreen; /* Default cell border */
       margin: 0;
       padding: 0;
       text-transform: uppercase;
     }
-    .sudoku-container input:nth-child(3n+1) {
-      border-left: 3px solid seagreen;
+    /* Thicker borders after every 3 rows */
+    .sudoku-container input:nth-child(9n+1) {
+      border-left: 5px solid black; /* Left border of 3x3 boxes */
     }
-    .sudoku-container input:nth-child(-n+9):nth-child(3n) {
-      border-right: 3px solid seagreen;
+    .sudoku-container input:nth-child(-n+9) {
+      border-top: 5px solid black; /* Top border of 3x3 boxes */
     }
-    .sudoku-container input:nth-child(n+19):nth-child(-n+27) {
-      border-bottom: 3px solid seagreen;
+    .sudoku-container input:nth-child(3n+3):not(:nth-child(9n)) {
+      border-right: 3px solid black; /* Vertical separator inside subgrids */
+    }
+    .sudoku-container input:nth-child(n+19):nth-child(-n+27),
+    .sudoku-container input:nth-child(n+46):nth-child(-n+54) {
+      border-bottom: 3px solid black; /* Horizontal separator inside subgrids */
     }
     .sudoku-container input:focus {
       outline: none;
@@ -95,17 +100,9 @@
 
     // Function to check if it's safe to place a letter
     function isSafe(grid, row, col, letter) {
-      // Check row
       for (let i = 0; i < 9; i++) {
-        if (grid[row][i] === letter) return false;
+        if (grid[row][i] === letter || grid[i][col] === letter) return false;
       }
-
-      // Check column
-      for (let i = 0; i < 9; i++) {
-        if (grid[i][col] === letter) return false;
-      }
-
-      // Check 3x3 box
       const boxRowStart = Math.floor(row / 3) * 3;
       const boxColStart = Math.floor(col / 3) * 3;
       for (let i = 0; i < 3; i++) {
@@ -113,7 +110,6 @@
           if (grid[boxRowStart + i][boxColStart + j] === letter) return false;
         }
       }
-
       return true;
     }
 
