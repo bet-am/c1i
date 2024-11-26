@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link href='https://fonts.googleapis.com/css?family=Josefin Slab' rel='stylesheet'>
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Slab&display=swap" rel="stylesheet">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
-      font-family: 'Josefin Slab';
+      font-family: 'Josefin Slab', serif;
       display: flex;
       flex-direction: column;
       align-items: center;
       margin-top: 20px;
-      background-color: lemonchiffon
+      background-color: lemonchiffon;
     }
     .sudoku-container {
       display: grid;
@@ -31,17 +31,17 @@
       text-transform: uppercase;
     }
     .sudoku-container input:nth-child(3n+1) {
-      border-left: 3px seagreen;
+      border-left: 3px solid seagreen;
     }
     .sudoku-container input:nth-child(-n+9):nth-child(3n) {
-      border-right: 3px seagreen;
+      border-right: 3px solid seagreen;
     }
     .sudoku-container input:nth-child(n+19):nth-child(-n+27) {
-      border-bottom: 3px seagreen;
+      border-bottom: 3px solid seagreen;
     }
     .sudoku-container input:focus {
       outline: none;
-      border: 2px seagreen;
+      border: 2px solid seagreen;
     }
     .incorrect {
       background-color: crimson;
@@ -50,36 +50,42 @@
     .error {
       border: 2px solid orange;
     }
-     .button {
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  font-family: 'Josephine Slab';
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer }
-      .button1 {background-color: yellowgreen }
+    .button {
+      border: none;
+      color: white;
+      padding: 15px 32px;
+      text-align: center;
+      font-family: 'Josefin Slab', serif;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+    }
+    .button1 {
+      background-color: yellowgreen;
+    }
     a:link {
-  color: seagreen; }
+      color: seagreen;
+    }
     a:visited {
-  color: seagreen; }
+      color: seagreen;
+    }
     a:hover {
-  text-decoration: seagreen wavy underline; }
-      hr {
-  border-width: 3 px;
-  border-color: sea green
-}
+      text-decoration: underline wavy seagreen;
+    }
+    hr {
+      border-width: 3px;
+      border-color: seagreen;
+    }
   </style>
 </head>
 <body>
-  <h1 style="color:seagreen;">Flamingo Sudoku</h1>
+  <h1 style="color: seagreen;">Flamingo Sudoku</h1>
   <div class="sudoku-container" id="sudoku-container">
     <!-- Grid will be generated here -->
   </div>
-  <button style="font-family: 'Josefin Slab';" class="button button1"id="check-sudoku">Check Solution</button>
-  <button style="font-family: 'Josefin Slab';" class="button button1" id="reset-sudoku">Reset Puzzle</button>
+  <button class="button button1" id="check-sudoku">Check Solution</button>
+  <button class="button button1" id="reset-sudoku">Reset Puzzle</button>
 
   <script>
     const sudokuContainer = document.getElementById('sudoku-container');
@@ -87,28 +93,60 @@
     const resetButton = document.getElementById('reset-sudoku');
     const letters = ['F', 'L', 'A', 'M', 'I', 'N', 'G', 'O', 'S'];
 
-    // Generate a valid random Flamingo Sudoku grid
-    function generateValidGrid() {
-      const grid = Array.from({ length: 9 }, () => Array(9).fill(null));
+    // Function to check if it's safe to place a letter
+    function isSafe(grid, row, col, letter) {
+      // Check row
+      for (let i = 0; i < 9; i++) {
+        if (grid[row][i] === letter) return false;
+      }
 
-      const shuffle = (arr) => arr.sort(() => Math.random() - 0.5);
+      // Check column
+      for (let i = 0; i < 9; i++) {
+        if (grid[i][col] === letter) return false;
+      }
 
-      const fillGrid = () => {
-        for (let i = 0; i < 9; i++) {
-          const shuffled = shuffle([...letters]);
-          for (let j = 0; j < 9; j++) {
-            grid[i][j] = shuffled[j];
+      // Check 3x3 box
+      const boxRowStart = Math.floor(row / 3) * 3;
+      const boxColStart = Math.floor(col / 3) * 3;
+      for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+          if (grid[boxRowStart + i][boxColStart + j] === letter) return false;
+        }
+      }
+
+      return true;
+    }
+
+    // Function to fill the grid using backtracking
+    function fillGrid(grid) {
+      for (let row = 0; row < 9; row++) {
+        for (let col = 0; col < 9; col++) {
+          if (grid[row][col] === null) {
+            for (const letter of letters) {
+              if (isSafe(grid, row, col, letter)) {
+                grid[row][col] = letter;
+                if (fillGrid(grid)) return true;
+                grid[row][col] = null;
+              }
+            }
+            return false;
           }
         }
-      };
+      }
+      return true;
+    }
 
-      fillGrid();
+    // Generate a valid Flamingo Sudoku grid
+    function generateValidGrid() {
+      const grid = Array.from({ length: 9 }, () => Array(9).fill(null));
+      fillGrid(grid);
       return grid;
     }
 
     // Hide random cells for the puzzle
     function hideRandomCells(grid) {
       const hideCount = 30;
+      const puzzle = JSON.parse(JSON.stringify(grid));
       const hiddenIndexes = new Set();
 
       while (hiddenIndexes.size < hideCount) {
@@ -117,27 +155,28 @@
         hiddenIndexes.add(`${row}-${col}`);
       }
 
-      return grid.map((row, i) =>
-        row.map((value, j) => (hiddenIndexes.has(`${i}-${j}`) ? null : value))
-      );
+      hiddenIndexes.forEach((index) => {
+        const [row, col] = index.split('-').map(Number);
+        puzzle[row][col] = null;
+      });
+
+      return puzzle;
     }
 
     // Render the Sudoku grid
     function renderSudoku(puzzle, solution) {
       sudokuContainer.innerHTML = '';
-      for (let i = 0; i < 9; i++) {
-        for (let j = 0; j < 9; j++) {
+      for (let row = 0; row < 9; row++) {
+        for (let col = 0; col < 9; col++) {
           const input = document.createElement('input');
           input.maxLength = 1;
-          input.dataset.row = i;
-          input.dataset.col = j;
 
-          if (puzzle[i][j]) {
-            input.value = puzzle[i][j];
+          if (puzzle[row][col]) {
+            input.value = puzzle[row][col];
             input.readOnly = true;
             input.style.backgroundColor = '#f0f0f0';
           } else {
-            input.dataset.solution = solution[i][j];
+            input.dataset.solution = solution[row][col];
           }
 
           sudokuContainer.appendChild(input);
@@ -145,33 +184,8 @@
       }
     }
 
-    // Validate user input
-    function validateInputs() {
-      const inputs = sudokuContainer.querySelectorAll('input');
-      let valid = true;
-
-      inputs.forEach((input) => {
-        if (!input.readOnly && input.value) {
-          const char = input.value.toUpperCase();
-          if (!letters.includes(char)) {
-            input.classList.add('error');
-            valid = false;
-          } else {
-            input.classList.remove('error');
-          }
-        }
-      });
-
-      return valid;
-    }
-
     // Check the solution
     function checkSolution() {
-      if (!validateInputs()) {
-        alert('Invalid inputs detected! Only use F, L, A, M, I, N, G, O, S.');
-        return;
-      }
-
       const inputs = sudokuContainer.querySelectorAll('input');
       let isSolved = true;
 
@@ -199,7 +213,7 @@
       generateSudoku();
     }
 
-    // Main function to generate and render the Sudoku
+    // Generate and render Sudoku
     function generateSudoku() {
       const solution = generateValidGrid();
       const puzzle = hideRandomCells(solution);
@@ -210,7 +224,7 @@
     checkButton.addEventListener('click', checkSolution);
     resetButton.addEventListener('click', resetPuzzle);
 
-    // Initialize the puzzle on page load
+    // Initialize
     window.onload = generateSudoku;
   </script>
 </body>
