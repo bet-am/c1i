@@ -1,90 +1,144 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Letter Sudoku</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .sudoku-container {
-            display: grid;
-            grid-template-columns: repeat(9, 60px);
-            grid-template-rows: repeat(9, 60px);
-            gap: 0;
-            border: 2px solid #000;
-        }
-        .sudoku-cell {
-            width: 60px;
-            height: 60px;
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid #ccc;
-            background-color: white;
-            box-sizing: border-box;
-        }
-        .sudoku-cell.readonly {
-            background-color: #e0e0e0;
-            cursor: not-allowed;
-        }
-        input {
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-            border: none;
-            outline: none;
-            background-color: transparent;
-            box-sizing: border-box;
-        }
-        /* Add thick seagreen vertical borders for 3x3 grids */
-        .sudoku-container > .sudoku-cell:nth-child(3n) {
-            border-right: 3px solid seagreen;
-        }
-        /* Add thick seagreen horizontal borders for 3x3 grids */
-        .sudoku-container > .sudoku-cell:nth-child(n + 1):nth-child(-n + 27),
-        .sudoku-container > .sudoku-cell:nth-child(n + 55):nth-child(-n + 63) {
-            border-bottom: 3px solid seagreen;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sudoku Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 20px;
+    }
+    .sudoku-container {
+      display: grid;
+      grid-template-columns: repeat(9, 50px);
+      grid-template-rows: repeat(9, 50px);
+      gap: 0;
+      border: 3px solid black;
+    }
+    .sudoku-container input {
+      width: 48px;
+      height: 48px;
+      text-align: center;
+      font-size: 18px;
+      border: 1px solid lightgray;
+      margin: 0;
+      padding: 0;
+    }
+    .sudoku-container input:nth-child(3n+1) {
+      border-left: 3px solid black;
+    }
+    .sudoku-container input:nth-child(-n+9):nth-child(3n) {
+      border-right: 3px solid black;
+    }
+    .sudoku-container input:nth-child(n+19):nth-child(-n+27) {
+      border-bottom: 3px solid black;
+    }
+    .sudoku-container input:focus {
+      outline: none;
+      border: 2px solid blue;
+    }
+    .bold-border {
+      border: 3px solid black;
+    }
+    .incorrect {
+      background-color: crimson;
+      color: white;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+  </style>
 </head>
 <body>
-    <div class="sudoku-container" id="sudoku-container"></div>
+  <h1>Sudoku</h1>
+  <div class="sudoku-container" id="sudoku-container">
+    <!-- Grid will be generated here -->
+  </div>
+  <button id="check-sudoku">Check Solution</button>
 
-    <script>
-        const gridSize = 9;
+  <script>
+    const sudokuContainer = document.getElementById('sudoku-container');
+    const checkButton = document.getElementById('check-sudoku');
 
-        const container = document.getElementById("sudoku-container");
+    // Generate a new Sudoku puzzle
+    function generateSudoku() {
+      // Predefined solution
+      const solution = [
+        [5, 3, 4, 6, 7, 8, 9, 1, 2],
+        [6, 7, 2, 1, 9, 5, 3, 4, 8],
+        [1, 9, 8, 3, 4, 2, 5, 6, 7],
+        [8, 5, 9, 7, 6, 1, 4, 2, 3],
+        [4, 2, 6, 8, 5, 3, 7, 9, 1],
+        [7, 1, 3, 9, 2, 4, 8, 5, 6],
+        [9, 6, 1, 5, 3, 7, 2, 8, 4],
+        [2, 8, 7, 4, 1, 9, 6, 3, 5],
+        [3, 4, 5, 2, 8, 6, 1, 7, 9],
+      ];
 
-        // Generate the grid and populate it
-        for (let row = 0; row < gridSize; row++) {
-            for (let col = 0; col < gridSize; col++) {
-                const cell = document.createElement("div");
-                cell.classList.add("sudoku-cell");
+      // Randomly hide 30 squares
+      const hideCount = 30;
+      const hiddenIndexes = new Set();
 
-                // Add an input for user interaction
-                const input = document.createElement("input");
-                input.type = "text";
-                input.maxLength = 1;
+      while (hiddenIndexes.size < hideCount) {
+        const row = Math.floor(Math.random() * 9);
+        const col = Math.floor(Math.random() * 9);
+        hiddenIndexes.add(`${row}-${col}`);
+      }
 
-                // Set the cell as editable
-                cell.appendChild(input);
-                container.appendChild(cell);
-            }
+      for (let row = 0; row < 9; row++) {
+        for (let col = 0; col < 9; col++) {
+          const input = document.createElement('input');
+          input.maxLength = 1;
+
+          if (!hiddenIndexes.has(`${row}-${col}`)) {
+            input.value = solution[row][col];
+            input.readOnly = true;
+            input.style.backgroundColor = "#f0f0f0";
+          } else {
+            input.dataset.solution = solution[row][col];
+          }
+
+          sudokuContainer.appendChild(input);
         }
-    </script>
+      }
+    }
+
+    // Check the solution
+    checkButton.addEventListener('click', () => {
+      const inputs = sudokuContainer.querySelectorAll('input');
+      let isSolved = true;
+
+      inputs.forEach(input => {
+        if (!input.readOnly) {
+          const userValue = parseInt(input.value, 10);
+          const solutionValue = parseInt(input.dataset.solution, 10);
+
+          if (userValue !== solutionValue) {
+            input.classList.add('incorrect');
+            isSolved = false;
+          } else {
+            input.classList.remove('incorrect');
+          }
+        }
+      });
+
+      if (isSolved) {
+        alert('Congrats!');
+      }
+    });
+
+    // Clear the grid and regenerate on page load
+    window.onload = () => {
+      sudokuContainer.innerHTML = '';
+      generateSudoku();
+    };
+  </script>
 </body>
 </html>
+
