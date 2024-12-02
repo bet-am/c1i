@@ -43,7 +43,7 @@
                 transform: translateY(0) scale(1) rotate(0deg);
             }
             50% {
-                transform: translateY(100px) scale(0.66) rotate(180deg); /* Aligns exactly with h2 */
+                transform: translate(60px, 100px) scale(0.66) rotate(180deg); /* Space after "upside" */
             }
             100% {
                 transform: translateY(0) scale(1) rotate(0deg);
@@ -53,6 +53,7 @@
 </head>
 <body>
     <h1>Feeling <span class="animated-down">Down</span></h1>
-    <h2>Turn that Frown Upside <span>Down</span></h2>
+    <h2>Turn that Frown Upside <span style="visibility: hidden;">Down</span></h2>
 </body>
 </html>
+
