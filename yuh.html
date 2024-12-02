@@ -36,17 +36,17 @@
             font-size: 3rem;
             font-weight: bold;
             color: red;
-            animation: floatAndFlip 3s infinite ease-in-out;
+            animation: floatAndResize 3s infinite ease-in-out;
         }
-        @keyframes floatAndFlip {
+        @keyframes floatAndResize {
             0% {
-                transform: translateY(0) rotate(0deg);
+                transform: translateY(0) scale(1) rotate(0deg);
             }
             50% {
-                transform: translateY(80px) rotate(180deg);
+                transform: translateY(80px) scale(0.66) rotate(180deg); /* Scale to match h2 size */
             }
             100% {
-                transform: translateY(0) rotate(0deg);
+                transform: translateY(0) scale(1) rotate(0deg);
             }
         }
     </style>
