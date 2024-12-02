@@ -3,25 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Feeling Down?</title>
+    <title>Feeling Down Animation</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             display: flex;
-            align-items: center;
-            justify-content: flex-end;
             flex-direction: column;
+            align-items: center;
+            justify-content: center;
             height: 100vh;
             background-color: #f0f8ff;
-            position: relative;
             overflow: hidden;
         }
         h1, h2 {
             margin: 0;
-            text-align: right;
-            padding-right: 50px;
+            text-align: center;
             position: relative;
         }
         h1 {
@@ -35,32 +33,26 @@
         }
         .animated-down {
             position: absolute;
-            right: 50px;
             font-size: 3rem;
             font-weight: bold;
             color: red;
-            animation: floatUpAndDown 2s infinite ease-in-out;
+            animation: floatAndFlip 3s infinite ease-in-out;
         }
-        @keyframes floatUpAndDown {
+        @keyframes floatAndFlip {
             0% {
-                transform: translateY(0);
+                transform: translateY(0) rotate(0deg);
             }
             50% {
-                transform: translateY(100px);
+                transform: translateY(80px) rotate(180deg);
             }
             100% {
-                transform: translateY(0);
+                transform: translateY(0) rotate(0deg);
             }
         }
     </style>
 </head>
 <body>
-    <h1>Feeling <span>Down</span>?</h1>
-    <h2>Turn that Frown Upside <span>Down</span>!</h2>
-    <span class="animated-down">Down</span>
-
-    <script>
-        // The animated "Down" dynamically syncs with the fixed titles
-    </script>
+    <h1>Feeling <span class="animated-down">Down</span></h1>
+    <h2>Turn that Frown Upside <span>Down</span></h2>
 </body>
 </html>
