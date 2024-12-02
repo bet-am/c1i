@@ -24,7 +24,7 @@
             height: 0;
             margin: 20px 0;
         }
-      
+
       h1, h2 {
             margin: 0;
             text-align: center;
@@ -48,33 +48,37 @@
         }
         .flipping-upside {
             display: inline-block;
-            animation: flipUpside 3s infinite ease-in-out;
+            transform: rotate(180deg);
+            animation: flipToRightSideUp 3s infinite ease-in-out;
         }
         @keyframes moveAndResize {
             0% {
                 transform: translateY(0) scale(1);
             }
             50% {
-                transform: translate(60px, 100px) scale(0.66); /* Align and resize */
+                transform: translate(40px, 100px) scale(0.66); /* Align closer to "Upside" */
             }
             100% {
                 transform: translateY(0) scale(1);
             }
         }
-        @keyframes flipUpside {
-            0%, 100% {
-                transform: rotate(0deg);
+        @keyframes flipToRightSideUp {
+            0% {
+                transform: rotate(180deg);
             }
             50% {
+                transform: rotate(0deg); /* Animates to right-side up */
+            }
+            100% {
                 transform: rotate(180deg);
             }
         }
     </style>
   </head>
   <body>
-    <h1 style="color:seagreen;">Feeling <span class="animated-down">Down</span></h1>
+   <h1 style="color:seagreen;">Feeling <span class="animated-down">Down</span></h1>
     <h2 style="color:seagreen;">Turn that Frown <span class="flipping-upside">Upside</span> <span style="visibility: hidden;">Down</span></h2>
-     <hr class="squiggly">
+    <hr class="squiggly">
 <h3 style="color:yellowgreen;">Choose your path to happiness:</h3>
     <p><a href="https://bet-am.github.io/c1i/entry3.html">be creative!</a></p>
     <p><a href="https://bet-am.github.io/c1i/entry5.html">eat something! </a></p>
