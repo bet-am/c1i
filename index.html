@@ -21,7 +21,7 @@
   border-width: 3 px;
   border-color: sea green
 }
-        h1, h2 {
+      h1, h2 {
             margin: 0;
             text-align: center;
             position: relative;
@@ -39,25 +39,37 @@
             position: absolute;
             font-size: 3rem;
             font-weight: bold;
-            color: yellowgreen;
-            animation: floatAndResize 3s infinite ease-in-out;
+            color: red;
+            animation: moveAndResize 3s infinite ease-in-out;
         }
-        @keyframes floatAndResize {
+        .flipping-upside {
+            display: inline-block;
+            animation: flipUpside 3s infinite ease-in-out;
+        }
+        @keyframes moveAndResize {
             0% {
-                transform: translateY(0) scale(1) rotate(0deg);
+                transform: translateY(0) scale(1);
             }
             50% {
-                transform: translate(60px, 100px) scale(0.66) rotate(180deg); /* Space after "upside" */
+                transform: translate(60px, 100px) scale(0.66); /* Align and resize */
             }
             100% {
-                transform: translateY(0) scale(1) rotate(0deg);
+                transform: translateY(0) scale(1);
+            }
+        }
+        @keyframes flipUpside {
+            0%, 100% {
+                transform: rotate(0deg);
+            }
+            50% {
+                transform: rotate(180deg);
             }
         }
     </style>
   </head>
   <body>
-    <h1 style="color:seagreen;">Feeling <span class="animated-down">Down</span></h1>
-    <h2 style="color:seagreen;">Turn that Frown Upside <span style="visibility: hidden;">Down</span></h2>
+    <h1>Feeling <span class="animated-down">Down</span></h1>
+    <h2>Turn that Frown <span class="flipping-upside">Upside</span> <span style="visibility: hidden;">Down</span></h2>
 <hr style= border-top: 1 px solid sea green>
         Choose your path to happiness:</h3>
     <p><a href="https://bet-am.github.io/c1i/entry3.html">be creative!</a></p>
