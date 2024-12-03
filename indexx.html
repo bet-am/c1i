@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://fonts.googleapis.com/css?family=Josefin+Slab' rel='stylesheet'>
+    <style>
+        body {
+            font-family: 'Josefin Slab', serif;
+            font-size: 22px;
+            background-color: lemonchiffon;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1, h2 {
+            margin: 0;
+            text-align: center;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 50px;
+            color: seagreen;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: seagreen;
+        }
+
+        .animated-down {
+            position: absolute;
+            font-size: 3rem;
+            font-weight: bold;
+            color: yellowgreen;
+            animation: moveAndResize 3s infinite ease-in-out;
+        }
+
+        .flipping-upside {
+            display: inline-block;
+            transform: rotate(180deg);
+            animation: flipToRightSideUp 3s infinite ease-in-out;
+        }
+
+        hr.wavy {
+            border: none;
+            height: 5px;
+            background: linear-gradient(to right, seagreen 10%, yellowgreen 10%) repeat-x;
+            background-size: 20px 5px;
+            width: 100%;
+            margin: 20px 0;
+        }
+
+        /* Animations */
+        @keyframes moveAndResize {
+            0% {
+                transform: translateY(0) scale(1);
+            }
+            50% {
+                transform: translate(40px, 100px) scale(0.66);
+            }
+            100% {
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes flipToRightSideUp {
+            0% {
+                transform: rotate(180deg);
+            }
+            50% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(180deg);
+            }
+        }
+
+        /* Responsive behavior: Stop animations and change text */
+        @media (max-width: 768px) {
+            .animated-down, .flipping-upside {
+                animation: none; /* Stop animations */
+                transform: none; /* Reset transformations */
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+            }
+
+            .animated-down::after {
+                content: "Down?"; /* Change to static text */
+                position: static;
+                font-size: 2.5rem;
+                color: yellowgreen;
+            }
+
+            .flipping-upside::after {
+                content: "Upside Down!"; /* Change to static text */
+                position: static;
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Feeling <span class="animated-down">Down</span></h1>
+    <h2>Turn that Frown <span class="flipping-upside">Upside</span> <span style="visibility: hidden;">Down</span></h2>
+    <hr class="wavy">
+    <h3 style="color: yellowgreen; text-align: center;">Choose your path to happiness:</h3>
+    <div style="text-align: center;">
+        <p><a href="https://bet-am.github.io/c1i/entry3.html">be creative!</a></p>
+        <p><a href="https://bet-am.github.io/c1i/entry5.html">eat something!</a></p>
+        <p><a href="https://bet-am.github.io/c1i/entry6.html">play a game!</a></p>
+        <p><a href="https://bet-am.github.io/c1i/entry1.html">go outside!</a></p>
+        <p><a href="https://bet-am.github.io/c1i/entry2.html">spend time with loved ones!</a></p>
+        <p><a href="https://bet-am.github.io/c1i/entry4.html">indulge in hobbies!</a></p>
+        <p><a href="https://bet-am.github.io/c1i/entry7.html">do something productive!</a></p>
+        <p><a href="https://bet-am.github.io/c1i/entry8.html">move your body!</a></p>
+        <p><a href="https://bet-am.github.io/c1i/entry9.html">write about it!</a></p>
+        <p><a href="https://bet-am.github.io/c1i/entry10.html">make fun plans!</a></p>
+    </div>
+    <hr class="wavy">
+</body>
+</html>
