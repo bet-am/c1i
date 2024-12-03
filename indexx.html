@@ -75,67 +75,38 @@
                 transform: rotate(180deg);
             }
         }
-              a:link {
-  color: seagreen; }
-    a:visited {
-  color: seagreen; }
-    a:hover {
-  text-decoration: seagreen wavy underline; }
 
+        a:link {
+            color: seagreen;
+        }
 
+        a:visited {
+            color: seagreen;
+        }
 
-        /* Responsive behavior: Stop animations and change text */
+        a:hover {
+            text-decoration: seagreen wavy underline;
+        }
+
+        /* Responsive behavior: Remove animations and replace text */
         @media (max-width: 768px) {
-            .animated-down, .flipping-upside {
-                display: none; /* Hide animations */
-            }
-
-            h1 {
+            h1, h2 {
+                text-align: center;
                 font-size: 2.5rem;
                 color: seagreen;
             }
 
+            h1::before,
+            h2::before,
+            h1 span,
+            h2 span {
+                display: none; /* Remove all animations and extra words */
+            }
+
+            h1 {
+                content: "Feeling Down?"; /* Static Title */
+            }
+
             h2 {
-                font-size: 2rem;
-                color: seagreen;
+                content: "Turn your feel smile upright.`;
             }
-
-            /* Replace content for small screens */
-            h1::after {
-                content: "Feeling Down?";
-                position: static;
-            }
-
-            h2::after {
-                content: "Turn that Frown Upside Down!";
-                position: static;
-            }
-        }
-    </style>
-</head>
-<body>
-    <pre>
-    
-  </pre>
-    <h1>Feeling <span class="animated-down">Down</span></h1>
-    <h2>Turn that Frown <span class="flipping-upside">Upside</span> <span style="visibility: hidden;">Down</span></h2>
-  <pre>
-    
-  </pre>
-    <hr class="wavy">
-    <h3 style="color: yellowgreen; text-align: center;">Choose your path to happiness:</h3>
-    <div style="text-align: center;">
-        <p><a href="https://bet-am.github.io/c1i/entry3.html">be creative!</a></p>
-        <p><a href="https://bet-am.github.io/c1i/entry5.html">eat something!</a></p>
-        <p><a href="https://bet-am.github.io/c1i/entry6.html">play a game!</a></p>
-        <p><a href="https://bet-am.github.io/c1i/entry1.html">go outside!</a></p>
-        <p><a href="https://bet-am.github.io/c1i/entry2.html">spend time with loved ones!</a></p>
-        <p><a href="https://bet-am.github.io/c1i/entry4.html">indulge in hobbies!</a></p>
-        <p><a href="https://bet-am.github.io/c1i/entry7.html">do something productive!</a></p>
-        <p><a href="https://bet-am.github.io/c1i/entry8.html">move your body!</a></p>
-        <p><a href="https://bet-am.github.io/c1i/entry9.html">write about it!</a></p>
-        <p><a href="https://bet-am.github.io/c1i/entry10.html">make fun plans!</a></p>
-    </div>
-    <hr class="wavy">
-</body>
-</html>
