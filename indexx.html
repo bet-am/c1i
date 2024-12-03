@@ -28,21 +28,6 @@
             color: seagreen;
         }
 
-        .animated-down {
-            position: absolute;
-            font-size: 3rem;
-            font-weight: bold;
-            color: yellowgreen;
-            animation: moveAndResize 3s infinite ease-in-out;
-            top: 0; /* Set top position to keep it aligned at the top */
-        }
-
-        .flipping-upside {
-            display: inline-block;
-            transform: rotate(180deg);
-            animation: flipToRightSideUp 3s infinite ease-in-out;
-        }
-
         hr.wavy {
             border: none;
             height: 5px;
@@ -51,8 +36,18 @@
             width: 100%;
             margin: 20px 0;
         }
-
-        /* Animations */
+.animated-down {
+            position: absolute;
+            font-size: 3rem;
+            font-weight: bold;
+            color: yellowgreen;
+            animation: moveAndResize 3s infinite ease-in-out;
+        }
+        .flipping-upside {
+            display: inline-block;
+            transform: rotate(180deg);
+            animation: flipToRightSideUp 3s infinite ease-in-out;
+        }
         @keyframes moveAndResize {
             0% {
                 transform: translateY(0) scale(1);
@@ -64,13 +59,12 @@
                 transform: translateY(0) scale(1);
             }
         }
-
         @keyframes flipToRightSideUp {
             0% {
                 transform: rotate(180deg);
             }
             50% {
-                transform: rotate(0deg);
+                transform: rotate(0deg); /* Animates to right-side up */
             }
             100% {
                 transform: rotate(180deg);
