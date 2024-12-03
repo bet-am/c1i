@@ -90,23 +90,60 @@
 
         /* Responsive behavior: Remove animations and replace text */
         @media (max-width: 768px) {
-            h1, h2 {
-                text-align: center;
+            .animated-down, .flipping-upside {
+                display: none; /* Remove animations */
+            }
+
+            h1 {
                 font-size: 2.5rem;
                 color: seagreen;
             }
 
-            h1::before,
-            h2::before,
-            h1 span,
-            h2 span {
-                display: none; /* Remove all animations and extra words */
-            }
-
-            h1 {
-                content: "Feeling Down?"; /* Static Title */
-            }
-
             h2 {
-                content: "Turn your feel smile upright.`;
+                font-size: 2rem;
+                color: seagreen;
             }
+        }
+    </style>
+</head>
+<body>
+    <pre></pre>
+    <h1 id="title">Feeling <span class="animated-down">Down</span></h1>
+    <h2 id="subtitle">Turn that Frown <span class="flipping-upside">Upside</span></h2>
+    <pre></pre>
+    <hr class="wavy">
+    <h3 style="color: yellowgreen; text-align: center;">Choose your path to happiness:</h3>
+    <div style="text-align: center;">
+        <p><a href="https://bet-am.github.io/c1i/entry3.html">be creative!</a></p>
+        <p><a href="https://bet-am.github.io/c1i/entry5.html">eat something!</a></p>
+        <p><a href="https://bet-am.github.io/c1i/entry6.html">play a game!</a></p>
+        <p><a href="https://bet-am.github.io/c1i/entry1.html">go outside!</a></p>
+        <p><a href="https://bet-am.github.io/c1i/entry2.html">spend time with loved ones!</a></p>
+        <p><a href="https://bet-am.github.io/c1i/entry4.html">indulge in hobbies!</a></p>
+        <p><a href="https://bet-am.github.io/c1i/entry7.html">do something productive!</a></p>
+        <p><a href="https://bet-am.github.io/c1i/entry8.html">move your body!</a></p>
+        <p><a href="https://bet-am.github.io/c1i/entry9.html">write about it!</a></p>
+        <p><a href="https://bet-am.github.io/c1i/entry10.html">make fun plans!</a></p>
+    </div>
+    <hr class="wavy">
+
+    <script>
+        // JavaScript to change text when screen is resized
+        window.addEventListener('resize', function() {
+            const width = window.innerWidth;
+            const title = document.getElementById('title');
+            const subtitle = document.getElementById('subtitle');
+
+            if (width <= 768) {
+                // Change title and subtitle text for small screens
+                title.innerHTML = 'Feeling Down?';
+                subtitle.innerHTML = 'Turn that Frown Upside Down!';
+            } else {
+                // Reset the original title and subtitle with animations for larger screens
+                title.innerHTML = 'Feeling <span class="animated-down">Down</span>';
+                subtitle.innerHTML = 'Turn that Frown <span class="flipping-upside">Upside</span>';
+            }
+        });
+    </script>
+</body>
+</html>
