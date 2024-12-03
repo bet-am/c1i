@@ -11,17 +11,10 @@
             margin: 0;
             padding: 0;
         }
-        a:link {
-  color: seagreen; }
-    a:visited {
-  color: seagreen; }
-    a:hover {
-  text-decoration: seagreen wavy underline; }
 
         h1, h2 {
             margin: 0;
             text-align: center;
-            position: relative;
         }
 
         h1 {
@@ -82,33 +75,40 @@
                 transform: rotate(180deg);
             }
         }
+              a:link {
+  color: seagreen; }
+    a:visited {
+  color: seagreen; }
+    a:hover {
+  text-decoration: seagreen wavy underline; }
+
+
 
         /* Responsive behavior: Stop animations and change text */
         @media (max-width: 768px) {
             .animated-down, .flipping-upside {
-                animation: none; /* Stop animations */
-                transform: none; /* Reset transformations */
+                display: none; /* Hide animations */
             }
 
             h1 {
                 font-size: 2.5rem;
+                color: seagreen;
             }
 
             h2 {
-                font-size: 1.8rem;
+                font-size: 2rem;
+                color: seagreen;
             }
 
-            .animated-down::after {
-                content: "Down?"; /* Change to static text */
+            /* Replace content for small screens */
+            h1::after {
+                content: "Feeling Down?";
                 position: static;
-                font-size: 2.5rem;
-                color: yellowgreen;
             }
 
-            .flipping-upside::after {
-                content: "Upside Down!"; /* Change to static text */
+            h2::after {
+                content: "Turn that Frown Upside Down!";
                 position: static;
-                font-size: 1.8rem;
             }
         }
     </style>
