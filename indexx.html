@@ -34,6 +34,7 @@
             font-weight: bold;
             color: yellowgreen;
             animation: moveAndResize 3s infinite ease-in-out;
+            top: 0; /* Set top position to keep it aligned at the top */
         }
 
         .flipping-upside {
@@ -57,7 +58,7 @@
                 transform: translateY(0) scale(1);
             }
             50% {
-                transform: translate(40px, 100px) scale(0.66);
+                transform: translate(50px, 120px) scale(0.66); /* Increased the spacing here */
             }
             100% {
                 transform: translateY(0) scale(1);
