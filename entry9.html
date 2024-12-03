@@ -45,7 +45,8 @@
       .image-container {
       text-align: center; 
     }
-      #textBox {
+
+          #textBox {
       width: 300px;
       height: 40px;
       border: 2px solid seagreen;
@@ -53,10 +54,29 @@
       font-size: 16px;
       padding: 5px;
     }
+    #submitButton {
+      border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  font-family: 'Josephine Slab';
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer 
+    }
+    #submitButton:
+      {background-color: yellowgreen }
+    a:link {
+  color: seagreen; }
+    a:visited {
+  color: seagreen; }
+    a:hover {
+  text-decoration: seagreen wavy underline; }
     #phraseDisplay {
       margin-top: 20px;
       font-size: 18px;
-      color: seagreen;
+      color: darkslategray;
     }
        </style>
     </head>
@@ -76,9 +96,12 @@
       <img
             src=https://y.yarn.co/c24b411d-7e1f-40cc-bb0a-09f99af39f19_text.gif >
          </div>
+ <pre>
+    
+  </pre>
   <textarea id="textBox" placeholder="Type anything you want..."></textarea>
   <br>
-  <button id="button button1">Submit!</button>
+  <button id="submitButton">Submit!</button>
   <div id="phraseDisplay"></div>
 
   <script>
@@ -101,7 +124,5 @@
       document.getElementById('phraseDisplay').textContent = randomPhrase; // Display it below the button
     });
   </script>
-  <hr class="wavy">
-    <button style="font-family: 'Josefin Slab';" class="button button1" ><a href="https://bet-am.github.io/c1i/">Annnnnd back home!</a></button>
     </body>
 </html>
