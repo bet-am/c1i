@@ -44,6 +44,19 @@
       .image-container {
       text-align: center; 
     }
+      #textBox {
+      width: 300px;
+      height: 40px;
+      border: 2px solid seagreen;
+      border-radius: 5px;
+      font-size: 16px;
+      padding: 5px;
+    }
+    #phraseDisplay {
+      margin-top: 20px;
+      font-size: 18px;
+      color: seagreen;
+    }
        </style>
     </head>
     <body>
@@ -62,6 +75,31 @@
       <img
             src=https://y.yarn.co/c24b411d-7e1f-40cc-bb0a-09f99af39f19_text.gif >
          </div>
+  <textarea id="textBox" placeholder="Type anything you want..."></textarea>
+  <br>
+  <button id="submitButton">Submit!</button>
+  <div id="phraseDisplay"></div>
+
+  <script>
+    const phrases = [
+      "The early bird catches the worm.",
+      "A journey of a thousand miles begins with a single step.",
+      "Actions speak louder than words.",
+      "Every cloud has a silver lining.",
+      "Fortune favors the brave.",
+      "When in Rome, do as the Romans do.",
+      "A picture is worth a thousand words.",
+      "Better late than never.",
+      "The pen is mightier than the sword.",
+      "Practice makes perfect."
+    ];
+
+    document.getElementById('submitButton').addEventListener('click', () => {
+      const randomIndex = Math.floor(Math.random() * phrases.length); // Get a random phrase
+      const randomPhrase = phrases[randomIndex];
+      document.getElementById('phraseDisplay').textContent = randomPhrase; // Display it below the button
+    });
+  </script>
   <hr class="wavy">
     <button style="font-family: 'Josefin Slab';" class="button button1" ><a href="https://bet-am.github.io/c1i/">Annnnnd back home!</a></button>
     </body>
